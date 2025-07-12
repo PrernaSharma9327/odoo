@@ -1,22 +1,27 @@
-// models/productModel.js
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
   images: [String],
-
   description: {
     type: String,
     required: true,
-    trim: true           // removes accidental leading/trailing spaces
+    trim: true
   },
-
   status: {
     type: String,
-    enum: ['available', 'swap'],
-    required: true,
-    set: v => v.toLowerCase().trim()   // ⇢ transforms “Available ” → “available”
+    enum: ['available', 'swap', 'redeemed'],
+    default: 'available',
+    set: v => v.toLowerCase().trim()
   },
-
+  pointsRequired: {
+    type: Number,
+    default: 100
+  },
+  uploader: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now
